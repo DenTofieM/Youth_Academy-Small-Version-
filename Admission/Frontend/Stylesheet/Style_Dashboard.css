@@ -1,0 +1,529 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.Full_Body{
+    width: 100%;
+    display: flex;
+}
+
+/*____________________ Left Side Start ___________________*/
+
+.Left_Side_Field {
+    height: 100vh;
+    width: 20%;
+    background-color: rgb(22, 14, 14);
+
+    display: flex;
+    flex-direction: column;
+
+    position: fixed;
+}
+
+.Left_Side_Field .Left_Side_Upper {
+    height: 40vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Left_Side_Upper img {
+    height: 180px;
+    width: 180px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.Left_Side_Upper span {
+    font-size: 23px;
+    color: #ccc;
+}
+
+.Left_Side_Field .Left_Side_Down {
+    height: 60vh;
+    color: #ccc;
+}
+
+.Left_Side_Down ul {
+    list-style: none;
+    margin: 20px 10px 0px 10px;
+}
+
+.Left_Side_Down ul li {
+    padding: 10px 15px 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.Left_Side_Down ul li .fa {
+    font-size: 22px;
+    margin-right: 10px;
+}
+
+.Left_Side_Down ul li:hover {
+    background-color: black;
+}
+
+/*____________________ Left Side End ___________________*/
+
+/*____________________ Right Side Start ___________________*/
+.Right_Side_Field {
+    margin-left: 20%;
+    width: 80%;
+    float: right;
+
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+}
+
+/*____________________ Right Side Header ___________________*/
+.Right_Side_Field .Right_Side_Header {
+    height: 60px;
+    width: 80%;
+    background-color: blue;
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+}
+
+.Right_Side_Header .Logout_part{
+    margin-right: 10px;
+}
+
+.Hradline {
+    margin-left: 10px;
+    font-size: 20px;
+    color: #ccc;
+}
+
+.searching_part{
+    height: 35px;
+    width: 250px;
+    background-color: rgb(5, 5, 5);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 10px;
+    color: #ccc;
+    border: 2px solid #ccc;
+}
+
+.searching_part input {
+    margin-left: 10px;
+    width: 80%;
+    background-color: rgb(10, 10, 10);
+    border: none;
+    outline: none;
+    color: #ccc;
+}
+.searching_part .fa {
+    cursor: pointer;
+}
+.Logout_btn {
+    border: none;
+    outline: none;
+    padding: 5px 10px;
+    color: #ccc;
+    background-color: black;
+    border-radius: 5px;
+    font-size: medium;
+    cursor: pointer;
+}
+
+/*____________________ Form Model ___________________*/
+
+.Form_Model {
+    position: fixed;
+    height: 500px;
+    width: 320px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    background-color: black;
+    border-radius: 10px;
+    color: #ccc;
+    z-index: 2;
+}
+
+.Form_Model .Content_Form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.Input_Field {
+    background-color: brown;
+    height: 35px;
+    width: 220px;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.Input_Field input, .Input_Field select {
+    font-size: 14px;
+    width: 170px;
+    background-color: brown;
+    font-weight: 500;
+
+    border: none;
+    outline: none;
+    color: #ccc;
+}
+
+.Input_Field .fa {
+    color: #ccc;
+}
+
+.Save_Close {
+    width: 200px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    color: #ccc;
+    font-weight: 700;
+}
+
+.Save_Close button {
+    color: #ccc;
+    font-weight: 700;
+}
+
+.Save {
+    background-color: blue;
+}
+
+.Close {
+    background-color: red;
+}
+
+.Save_Close button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+}
+
+/*____________________ Profile Model ____________________*/
+.Profile_Model {
+    position: fixed;
+    height: 80vh;
+    width: 70%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    background-color: rgb(201, 87, 11);
+    border-radius: 10px;
+    color: #ccc;
+    z-index: 1;
+}
+
+.Profile_Model .Profile_Head {
+    height: 110px;
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px solid rgb(250, 250, 250);
+    padding: 10px;
+
+    column-count: 2;
+    column-gap: 30px;
+    column-rule: 5px double #ccc;
+    position: relative;
+}
+.Profile_Head table {
+    width: 100%;
+}
+
+.Profile_Edit {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 5px 20px;
+    background-color: tomato;
+    border-radius: 5px;
+    color: #ccc;
+}
+
+.Profile_Head table tr td {
+    padding-right: 5px;
+}
+
+.Profile_Body {
+    height: calc(80vh - 180px);
+    border: 1px solid #ccc;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.Profile_Body .Profile_Body_Head {
+    height: 35px;
+    background-color: red;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Choose_Option select {
+    background-color: tomato;
+    padding: 3px 10px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: #ccc;
+}
+
+
+.Profile_Body_Body .Row {
+    background-color: grey;
+    height: 30px;
+    border-radius: 5px;
+    margin: 5px 5px;
+    transition: all 0.5s;
+
+    display: grid;
+    grid-template-columns: 20% 20% 12% 12% 12% 12% calc(12% - 35px);
+    grid-column-gap: 5px;
+
+    justify-content: center;
+    align-items: center;
+    padding-left: 5px;
+
+    font-size: 13px;
+    text-align: center;
+}
+/*____________________ Extra Model_______________________*/
+
+.Extra_Model {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    border-radius: 5px;
+    color: #ccc;
+    background-color: rgb(85, 107, 47);
+}
+
+.Extra_Model .Extra_Box {
+    min-height: 250px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.Extra_Box textarea {
+    height: 60px;
+    width: 220px;
+    padding: 5px;
+
+    border: none;
+    outline: none;
+    background-color: brown;
+    font-size: 12px;
+    color: #ccc;
+    border-radius: 5px;
+}
+
+/*____________________ Right Side Body ___________________*/
+.Right_Side_Field .Right_Side_Body {
+    min-height: calc(100vh - 60px - 30px);
+    margin-top: 60px;
+    position: relative;
+    background-color: #ccc;
+}
+/*_____________________ Dashboard Component ________________*/
+.Dash_Top{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+    padding: 10px;
+}
+
+.Dash_Top .Box_Btn {
+    height: 100px;
+    background-color: black;
+    border-radius: 5px;
+    color: #ccc;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.5s;
+}
+
+.Dash_Top .Box_Btn:hover {
+    box-shadow: 2px 2px 5px brown, -2px -2px 5px brown;
+}
+
+.Box_Btn .Box_Title {
+    height: 75px;
+    font-size: 30px;
+    border-radius: 5px 5px 0px 0px;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.Box_Btn .Box_Button {
+    background-color: rgb(29, 29, 29);
+    height: 25px;
+    border-radius: 0px 0px 5px 5px;
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*____________________ Student Component ___________________*/
+.Body_Content_Part {
+    margin: 10px;
+    box-sizing: border-box;
+    background-color: rgba(49, 45, 45, 0.233);
+    width: calc(100% - 20px);
+    height: calc(100vh - 60px - 50px);
+    overflow: hidden;
+    overflow-y: auto;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    z-index: -1;
+}
+
+.Body_Content_Part .Content_Head {
+    height: 40px;
+    background-color: brown;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ccc;
+}
+
+.Add_Btn button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: black;
+    border-radius: 5px;
+    color: #ccc;
+    font-weight: 500;
+}
+
+.Search {
+    margin-right: 10px;
+    background-color: black;
+    height: 30px;
+    width: 160px;
+    border-radius: 5px;
+    color: #ccc;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.Search input {
+    width: 120px;
+    border: none;
+    outline: none;
+    background-color: black;
+    color: #ccc;
+}
+
+.Body_Content_Part .Content_Body{
+    height: calc(100vh - 100px - 50px);
+    background-color: rgb(168, 81, 81);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.Content_Body .Row {
+    background-color: coral;
+    height: 30px;
+    border-radius: 5px;
+    margin: 5px 5px;
+    transition: all 0.5s;
+
+    display: grid;
+    grid-template-columns: 20% 30% 20% 20% calc(10% - 20px);
+    grid-column-gap: 5px;
+
+    justify-content: center;
+    align-items: center;
+    padding-left: 5px;
+}
+
+.Deltails button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    padding: 3px 10px;
+    background-color: green;
+    color: #ccc;
+    border-radius: 5px;
+}
+
+
+.Content_Body .Row:hover {
+    background-color: gray;
+    color: #ccc;
+}
+
+/*____________________ Schedule ___________________________*/
+.Schedule_Body .Row{
+    grid-template-columns: 10% 15% 25% 20% 20% calc(10% - 25px);
+}
+
+.Schedule_Body_Body .Row{
+    grid-template-columns: 5% 15% 20% 20% 20% calc(20% - 25px);
+}
+/*____________________ Examination ________________________*/
+
+
+.Examination_Body .Row {
+    grid-template-columns: 20% 15% 15% 20% 20% calc(10% - 25px);
+}
+
+/*____________________ Schedule ___________________________*/
+.Teacher_Body .Row{
+    grid-template-columns: 15% 15% 15% 30% calc(25% - 25px);
+}
+/*____________________ Right Side Footer ___________________*/
+.Right_Side_Field .Right_Side_Footer {
+    height: 30px;
+    background-color: black;
+    color: #ccc;
+    text-align: center;
+    padding: 7px;
+}

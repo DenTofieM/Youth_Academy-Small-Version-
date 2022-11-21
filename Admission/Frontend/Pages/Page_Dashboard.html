@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../Assets/Static/icon.png"/>
+    <title>Youth Academy</title>
+    <link rel="stylesheet" href="../Stylesheet/Style_Dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    
+    <div class="Full_Body" id="Dashboard_Body">
+        <div class="Left_Side_Field">
+            <div class="Left_Side_Upper">
+                <img src="../Assets/Static/User-icon.png" alt="">
+                <span>{{ AdminID }}</span>
+            </div>
+            <hr>
+            <div class="Left_Side_Down">
+                <ul>
+                    <li @click="Dashboard()"><i class="fa fa-sitemap"></i><span> DASHBOARD</span></li>
+                    <li @click="Student()"><i class="fa fa-mortar-board"></i><span> STUDENT</span></li>
+                    <li @click="ClassRecord()"><i class="fa fa-institution"></i><span> SCHEDULE</span></li>
+                    <li @click="Examination()"><i class="fa fa-legal"></i><span> EXAMINATION</span></li>
+                    <li @click="Teacher()"><i class="fa fa-user"></i><span> TEACHER</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="Right_Side_Field">
+
+            <div class="Right_Side_Header">
+
+                <div class="Hradline">
+                    DASHBOARD
+                </div>
+
+                <div class="searching_part">
+                    <input type="text" placeholder="Search...">
+                    <i class="fa fa-search"></i>
+                </div>
+                <div class="Logout_part">
+                    <button class="Logout_btn" @click="Logout()"> Logout</button>
+                </div>
+            </div>
+
+            <div class="Right_Side_Body">
+                <div class="Body_Content_Part">
+                    <div class="Content_part" v-if="Menu_Flag==='dashboard'">
+                        <div class="Dash_Top">
+                            <div class="Box_Btn">
+                                <div class="Box_Title">
+                                    <div><i class="fa fa-snowflake-o"></i></div>
+                                    <div>Batch</div>
+                                </div>
+                                <div class="Box_Button" @click="OpenBatchModel()">Craete new batch</div>
+                            </div>
+                            <div class="Box_Btn">
+                                <div class="Box_Title">
+                                    <div><i class="fa fa-sliders"></i></div>
+                                    <div>Exam Type</div>
+                                </div>
+                                <div class="Box_Button" @click="OpenExamTypeModel()">Create new type</div>
+                            </div>
+                            <div class="Box_Btn">
+                                <div class="Box_Title">
+                                    <div><i class="fa fa-book"></i></div>
+                                    <div>Subject</div>
+                                </div>
+                                <div class="Box_Button" @click="OpenSubjectModel()">Craete new subject</div>
+                            </div>
+                            <div class="Box_Btn">
+                                <div class="Box_Title">
+                                    <div><i class="fa fa-puzzle-piece"></i></div>
+                                    <div>Lecture</div>
+                                </div>
+                                <div class="Box_Button" @click="OpenLectureModel()">Craete new lecture</div>
+                            </div>
+                            <div class="Box_Btn">
+                                <div class="Box_Title">
+                                    <div><i class="fa fa-calendar-check-o"></i></div>
+                                    <div>Schedule</div>
+                                </div>
+                                <div class="Box_Button" @click="OpenScheduleAddForm()">Craete new class schedule</div>
+                            </div>
+                            <div class="Box_Btn">
+                                <div class="Box_Title">
+                                    <div><i class="fa fa-legal"></i></div>
+                                    <div>Examination</div>
+                                </div>
+                                <div class="Box_Button" @click="OpenExaminationAddForm()">Craete new exam schedule</div>
+                            </div>
+                            <div class="Box_Btn">
+                                <div class="Box_Title">
+                                    <div><i class="fa fa-vcard"></i></div>
+                                    <div>Student</div>
+                                </div>
+                                <div class="Box_Button" @click="OpenStudentAddForm()">Add new student</div>
+                            </div>
+                            <div class="Box_Btn">
+                                <div class="Box_Title">
+                                    <div><i class="fa fa-graduation-cap"></i></div>
+                                    <div>Teacher</div>
+                                </div>
+                                <div class="Box_Button" @click="OpenTeacherAddForm()">Add new teacher</div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="Content_part" v-if="Menu_Flag==='student'">
+                        
+                        <div class="Content_Head">
+                            <div class="Add_Btn" @click="OpenStudentAddForm()"><button>Add New Student</button></div>
+                            <div class=""><h3>STUDENT LIST</h3></div>
+                            <div class="Search"><input type="text" placeholder="Searching..."><i class="fa fa-search"></i></div>
+                        </div>
+
+                        <div class="Content_Body">
+                            <div v-for="student in Students" class="Row">
+                                <div>{{ student.std_id }}</div>
+                                <div>{{ student.std_name }}</div>
+                                <div>{{ student.std_phone }}</div>
+                                <div>{{ student.std_batch }}</div>
+                                <div class="Deltails" @click="OpenStudentProfile(student.std_id)"><button>Details</button></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="Content_part" v-if="Menu_Flag==='schedule'">
+                        
+                        <div class="Content_Head Schedule_Head">
+                            <div class="Add_Btn" @click="OpenScheduleAddForm()"><button>Add New Schedule</button></div>
+                            <div class=""><h3> CLASS SCHEDULES</h3></div>
+                            <div class="Search"><input type="text" placeholder="Searching..."><i class="fa fa-search"></i></div>
+                        </div>
+                        
+                        <div class="Content_Body Schedule_Body">
+                            <div class="Row" v-for="schedule in Schedules">
+                                <div>{{ schedule.schd_date }}</div>
+                                <div>{{ schedule.schd_subject }}</div>
+                                <div>{{ schedule.tch_name }}</div>
+                                <div>{{ schedule.schd_starting_time }} - {{ schedule.schd_ending_time }}</div>
+                                <div>{{ schedule.schd_batch }}</div>
+                                <div class="Deltails" @click="OpenScheduleDetails(schedule.schd_id)"><button>Details</button></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="Content_part" v-if="Menu_Flag==='examination'">
+
+                        <div class="Content_Head Examination_Head">
+                            <div class="Add_Btn" @click="OpenExaminationAddForm()"><button>Add New Examination</button></div>
+                            <div class=""><h3>EXAMINATION LIST</h3></div>
+                            <div class="Search"><input type="text" placeholder="Searching..."><i class="fa fa-search"></i></div>
+                        </div>
+
+                        <div class="Content_Body Examination_Body">
+                            <div class="Row" v-for="examination in Examinations">
+                                <div>{{ examination.exam_date }}</div>
+                                <div>{{ examination.exam_starting_time }}</div>
+                                <div>{{ examination.exam_ext_type }}</div>
+                                <div>{{ examination.exam_sub_name }}</div>
+                                <div>{{ examination.exam_batch }}</div>
+                                <div class="Deltails" @click="OpenExaminationDetails(examination.exam_id)"><button>Details</button></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="Content_part" v-if="Menu_Flag==='teacher'">
+
+                        <div class="Content_Head">
+                            <div class="Add_Btn" @click="OpenTeacherAddForm()"><button>Add New Teacher</button></div>
+                            <div class=""><h3>TEACHER LIST</h3></div>
+                            <div class="Search"><input type="text" placeholder="Searching..."><i class="fa fa-search"></i></div>
+                        </div>
+
+                        <div class="Content_Body">
+                            <div v-for="teacher in Teachers" class="Row">
+                                <div>{{ teacher.tch_id }}</div>
+                                <div>{{ teacher.tch_name }}</div>
+                                <div>{{ teacher.tch_phone }}</div>
+                                <div>{{ teacher.tch_subject }}</div>
+                                <div class="Deltails" @click="OpenTeacherProfile(teacher.tch_id)"><button>Details</button></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="Others">
+                        <div class="Form_Model" v-if="FormModel">
+                            <!-- Student Form Model -->
+                            <div class="Content_Form" v-if="StudentFormModel">
+                                <div class="">
+                                    Create New Student
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-user"></i>
+                                    <input v-model="NewStudent.S_Name" type="text" placeholder="Enter Full Name">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-envelope"></i>
+                                    <input v-model="NewStudent.S_Email" type="email" placeholder="Enter Active Email">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-phone"></i>
+                                    <input v-model="NewStudent.S_Phone" type="tel" placeholder="Enter Phone Number">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-institution"></i>
+                                    <input v-model="NewStudent.S_School" type="text" placeholder="Enter School Name">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-book"></i>
+                                    <input v-model="NewStudent.S_Roll" type="text" placeholder="SSC Roll Number">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-address-card"></i>
+                                    <input v-model="NewStudent.S_Registration" type="text" placeholder="Registration Number">
+                                </div>
+                                <div class="Input_Field">
+                                    <select v-model="NewStudent.S_Batch">
+                                        <option value="">Select Batch</option>
+                                        <option v-for="batch in Batch">{{ batch.bat_name }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="Save_Close">
+                                    <button @click="SaveStudentFormData()" class="Save">Save</button>
+                                    <button @click="CloseStudentAddForm()" class="Close">Close</button>
+                                </div>
+                            </div>
+
+                            <div class="Content_Form" v-if="StudentFormEditModel">
+                                <div class="">
+                                    Update Current Student
+                                </div>
+                                
+                                <div class="Input_Field">
+                                    <i class="fa fa-user"></i>
+                                    <input v-model="NewStudent.S_Name" type="text" placeholder="Enter Full Name">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-envelope"></i>
+                                    <input v-model="NewStudent.S_Email" type="email" placeholder="Enter Active Email">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-phone"></i>
+                                    <input v-model="NewStudent.S_Phone" type="tel" placeholder="Enter Phone Number">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-institution"></i>
+                                    <input v-model="NewStudent.S_School" type="text" placeholder="Enter School Name">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-book"></i>
+                                    <input v-model="NewStudent.S_Roll" type="text" placeholder="SSC Roll Number">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-address-card"></i>
+                                    <input v-model="NewStudent.S_Registration" type="text" placeholder="Registration Number">
+                                </div>
+                                <div class="Input_Field">
+                                    <select v-model="NewStudent.S_Batch">
+                                        <option value="">Select Batch</option>
+                                        <option v-for="batch in Batch">{{ batch.bat_name }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="Save_Close">
+                                    <button @click="UpdateStudentFormData()" class="Save">Update</button>
+                                    <button @click="CloseStudentEditForm()" class="Close">Close</button>
+                                </div>
+                            </div>
+
+                            <!-- Schedule Form Model -->
+                            <div class="Content_Form" v-if="ScheduleFormModel">
+                                <div class="">
+                                    New Class Scheduele 
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-envelope"></i>
+                                    <select v-model="NewSchedule.Subject" v-on:change="GetLecture(NewSchedule.Subject)">
+                                        <option value="" disabled>Select Subject</option>
+                                        <option v-for="subject in Subjects">{{ subject.sub_name }}</option>
+                                    </select>
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-phone"></i>
+                                    <select v-model="NewSchedule.Lecture">
+                                        <option value="" disabled>Select Lecture Topic</option>
+                                        <option v-for="Lec in Lecture" :value="Lec.lec_id"> {{ Lec.lec_topic }}</option>
+                                    </select>
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-institution"></i>
+                                    <input v-model="NewSchedule.Date" type="date" placeholder="Enter School Name">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-book"></i>
+                                    <input v-model="NewSchedule.Start_Time" type="time" placeholder="SSC Roll Number">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-address-card"></i>
+                                    <input v-model="NewSchedule.End_Time" type="time" placeholder="Total marks">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-address-card"></i>
+                                    <select v-model="NewSchedule.Teacher">
+                                        <option value="" disabled>Select Teacher</option>
+                                        <option v-for="teacher in Teachers" :value="teacher.tch_id"> {{ teacher.tch_name }}</option>
+                                    </select>
+                                </div>
+                                <div class="Input_Field">
+                                    <select v-model="NewSchedule.Batch">
+                                        <option value="">Select Batch</option>
+                                        <option v-for="batch in Batch">{{ batch.bat_name }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="Save_Close">
+                                    <button @click="SaveScheduleFormData()" class="Save">Save</button>
+                                    <button @click="CloseScheduleAddForm()" class="Close">Close</button>
+                                </div>
+                            </div>
+
+                            <div class="Content_Form" v-if="ScheduleFormEditModel">
+                                <div class="">
+                                    Update Class Schedule
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-envelope"></i>
+                                    <select v-model="NewSchedule.Subject" v-on:change="GetLecture(NewSchedule.Subject)">
+                                        <option value="" disabled>Select Subject</option>
+                                        <option v-for="subject in Subjects">{{ subject.sub_name }}</option>
+                                    </select>
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-phone"></i>
+                                    <select v-model="NewSchedule.Lecture">
+                                        <option value="" disabled>Select Lecture Topic</option>
+                                        <option v-for="Lec in Lecture" :value="Lec.lec_id"> {{ Lec.lec_topic }}</option>
+                                    </select>
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-institution"></i>
+                                    <input v-model="NewSchedule.Date" type="date" placeholder="Enter School Name">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-book"></i>
+                                    <input v-model="NewSchedule.Start_Time" type="time" placeholder="SSC Roll Number">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-address-card"></i>
+                                    <input v-model="NewSchedule.End_Time" type="time" placeholder="Total marks">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-address-card"></i>
+                                    <select v-model="NewSchedule.Teacher">
+                                        <option value="" disabled>Select Teacher</option>
+                                        <option v-for="teacher in Teachers" :value="teacher.tch_id"> {{ teacher.tch_name }}</option>
+                                    </select>
+                                </div>
+                                <div class="Input_Field">
+                                    <select v-model="NewSchedule.Batch">
+                                        <option value="">Select Batch</option>
+                                        <option v-for="batch in Batch">{{ batch.bat_name }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="Save_Close">
+                                    <button @click="UpdateScheduleFormData()" class="Save">Save</button>
+                                    <button @click="CloseScheduleEditForm()" class="Close">Close</button>
+                                </div>
+                            </div>
+
+                            <!-- Examination Form Model -->
+                            <div class="Content_Form" v-if="ExaminationFormModel">
+                                <div class="">
+                                    Create New Examination
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-user"></i>
+                                    <select v-model="NewExamination.Type">
+                                        <option value="" disabled>Select Exam Type</option>
+                                        <option v-for="type in ExamType">{{ type.ext_type }}</option>
+                                    </select>
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-envelope"></i>
+                                    <select v-model="NewExamination.Subject" v-on:change="GetLecture(NewExamination.Subject)">
+                                        <option value="" disabled>Select Subject</option>
+                                        <option v-for="subject in Subjects">{{ subject.sub_name }}</option>
+                                    </select>
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-phone"></i>
+                                    <select v-model="NewExamination.Topic">
+                                        <option value="" disabled>Select Lecture Topic</option>
+                                        <option v-for="Lec in Lecture" :value="Lec.lec_id"> {{ Lec.lec_topic }}</option>
+                                    </select>
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-institution"></i>
+                                    <input v-model="NewExamination.Date" type="date" placeholder="Enter School Name">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-book"></i>
+                                    <input v-model="NewExamination.Time" type="time" placeholder="SSC Roll Number">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-address-card"></i>
+                                    <input v-model="NewExamination.Mark" type="text" placeholder="Total marks">
+                                </div>
+                                <div class="Input_Field">
+                                    <select v-model="NewExamination.Batch">
+                                        <option value="">Select Batch</option>
+                                        <option v-for="batch in Batch">{{ batch.bat_name }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="Save_Close">
+                                    <button @click="SaveExaminationFormData()" class="Save">Save</button>
+                                    <button @click="CloseExaminationAddForm()" class="Close">Close</button>
+                                </div>
+                            </div>
+
+                            <div class="Content_Form" v-if="ExaminationFormEditModel">
+                                <div class="">
+                                    Update Current Examination
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-user"></i>
+                                    <select v-model="NewExamination.Type">
+                                        <option value="" disabled>Select Exam Type</option>
+                                        <option v-for="type in ExamType">{{ type.ext_type }}</option>
+                                    </select>
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-envelope"></i>
+                                    <select v-model="NewExamination.Subject" v-on:change="GetLecture(NewExamination.Subject)">
+                                        <option value="" disabled>Select Subject</option>
+                                        <option v-for="subject in Subjects">{{ subject.sub_name }}</option>
+                                    </select>
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-phone"></i>
+                                    <select v-model="NewExamination.Topic">
+                                        <option value="" disabled>Select Lecture Topic</option>
+                                        <option v-for="Lec in Lecture" :value="Lec.lec_id"> {{ Lec.lec_topic }}</option>
+                                    </select>
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-institution"></i>
+                                    <input v-model="NewExamination.Date" type="date" placeholder="Enter School Name">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-book"></i>
+                                    <input v-model="NewExamination.Time" type="time" placeholder="SSC Roll Number">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-address-card"></i>
+                                    <input v-model="NewExamination.Mark" type="text" placeholder="Total marks">
+                                </div>
+                                <div class="Input_Field">
+                                    <select v-model="NewExamination.Batch">
+                                        <option value="">Select Batch</option>
+                                        <option v-for="batch in Batch">{{ batch.bat_name }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="Save_Close">
+                                    <button @click="UpdateExaminationFormData()" class="Save">Save</button>
+                                    <button @click="CloseExaminationEditForm()" class="Close">Close</button>
+                                </div>
+                            </div>
+
+                            <!-- Teacher Form Model -->
+                            <div class="Content_Form" v-if="TeacherFormModel">
+                                <div class="">
+                                    Create New Teacher
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-user"></i>
+                                    <input v-model="NewTeacher.T_Name" type="text" placeholder="Enter Full Name">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-envelope"></i>
+                                    <input v-model="NewTeacher.T_Email" type="email" placeholder="Enter Active Email">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-phone"></i>
+                                    <input v-model="NewTeacher.T_Phone" type="tel" placeholder="Enter Phone Number">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-institution"></i>
+                                    <input v-model="NewTeacher.T_Institution" type="text" placeholder="Enter Institution Name">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-book"></i>
+                                    <input v-model="NewTeacher.T_Department" type="text" placeholder="Enter Department">
+                                </div>
+                                <div class="Input_Field">
+                                    <select v-model="NewTeacher.T_Subject">
+                                        <option value="">Select Subject</option>
+                                        <option v-for="subject in Subjects">{{ subject.sub_name }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="Save_Close">
+                                    <button @click="SaveTeacherFormData()" class="Save">Save</button>
+                                    <button @click="CloseTeacherAddForm()" class="Close">Close</button>
+                                </div>
+                            </div>
+
+                            <div class="Content_Form" v-if="TeacherFormEditModel">
+                                <div class="">
+                                    Update Current Teacher
+                                </div>
+                                
+                                <div class="Input_Field">
+                                    <i class="fa fa-user"></i>
+                                    <input v-model="NewTeacher.T_Name" type="text" placeholder="Enter Full Name">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-envelope"></i>
+                                    <input v-model="NewTeacher.T_Email" type="email" placeholder="Enter Active Email">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-phone"></i>
+                                    <input v-model="NewTeacher.T_Phone" type="tel" placeholder="Enter Phone Number">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-institution"></i>
+                                    <input v-model="NewTeacher.T_Institution" type="text" placeholder="Enter Institution Name">
+                                </div>
+                                <div class="Input_Field">
+                                    <i class="fa fa-book"></i>
+                                    <input v-model="NewTeacher.T_Department" type="text" placeholder="Enter Department">
+                                </div>
+                                <div class="Input_Field">
+                                    <select v-model="NewTeacher.T_Subject">
+                                        <option value="">Select Subject</option>
+                                        <option v-for="subject in Subjects">{{ subject.sub_name }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="Save_Close">
+                                    <button @click="UpdateTeacherFormData()" class="Save">Update</button>
+                                    <button @click="CloseTeacherEditForm()" class="Close">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="Profile_Model" v-if="ProfileModel">
+                            
+                            <!-------------- Student Profile ----------->
+                            <div class="Student_Profile" v-if="StudentProfileModel">
+                                <div class="Profile_Head" v-for="std_info in StudentInformation">
+                                    <table>
+                                        <tr>
+                                            <td>ID</td><td> : </td><td>{{ std_info.std_id }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Name</td><td> : </td><td>{{ std_info.std_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td><td> : </td><td>{{ std_info.std_email }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phone</td><td> : </td><td>{{ std_info.std_phone }}</td>
+                                        </tr>
+                                    </table>
+                                    <table>
+                                        <tr>
+                                            <td>School</td><td> : </td><td>{{ std_info.std_school }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Batch</td><td> : </td><td>{{ std_info.std_batch }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>SSC Roll</td><td> : </td><td>{{ std_info.std_roll }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Reg Number</td><td> : </td><td>{{ std_info.std_reg }}</td>
+                                        </tr>
+                                    </table>
+                                    <button class="Profile_Edit" @click="OpenStudentEditForm(std_info)">EDIT</button>
+                                </div>
+
+                                <div class="Profile_Body">
+                                    
+                                    <div class="Profile_Body_Head">
+                                        <div class="Choose_Option">
+                                            <select name="" id="">
+                                                <option value="">Select Subject</option>
+                                                <option v-for="subject in Subjects">{{ subject.sub_name }}</option>
+                                            </select>
+                                        </div>
+                                        <div class="">Examinations Reseults</div>
+                                        <div class="Choose_Option">
+                                            <select name="" id="">
+                                                <option value="">Select Exams</option>
+                                                <option v-for="type in ExamType">{{ type.ext_type }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="Profile_Body_Body">
+                                        <div class="Row" v-for="std_res in StudentResult">
+                                            <div class="">{{ std_res.exam_date }}</div>
+                                            <div class="">{{ std_res.exam_ext_type }}</div>
+                                            <div class="">{{ std_res.exam_sub_name }}</div>
+                                            <div class="">{{ std_res.res_mark }}</div>
+                                            <div class="">{{ Grade(std_res.res_mark) }}</div>
+                                            <div class="">{{ GPA(std_res.res_mark) }}</div>
+                                            <div class="">5th</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <center>
+                                <div class="Save_Close">
+                                    <button class="Save">Print</button>
+                                    <button @click="CloseStudentProfile()" class="Close">Close</button>
+                                </div>
+                                </center>
+                            </div>
+                            
+                            <!-------------- Schedule Details ----------->
+                            <div class="Schedule_Profile" v-if="ScheduleDetailsModel">
+                                <div class="Profile_Head" v-for="schd_info in ScheduleInformation">
+                                    <table>
+                                        <tr>
+                                            <td>Subject</td><td> : </td><td>{{ schd_info.schd_subject }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lecture</td><td> : </td><td>{{ schd_info.lec_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Topic</td><td> : </td><td>{{ schd_info.lec_topic }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lecture Note</td><td> : </td><td><a style="color: skyblue;" href="#">{{ schd_info.lec_name }}</a></td>
+                                        </tr>
+                                    </table>
+                                    <table>
+                                        <tr>
+                                            <td>Batch</td><td> : </td><td>{{ schd_info.schd_batch }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Date</td><td> : </td><td>{{ schd_info.schd_date }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Time</td><td> : </td><td>{{ schd_info.schd_starting_time }} - {{ schd_info.schd_ending_time }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Teacher</td><td> : </td><td>{{ schd_info.tch_name }}</td>
+                                        </tr>
+                                    </table>
+                                    <button class="Profile_Edit" @click="OpenScheduleEditForm(schd_info)">EDIT</button>
+                                </div>
+
+                                <div class="Profile_Body">
+                                    
+                                    <div class="Profile_Body_Head">
+                                        <div class="Choose_Option">
+                                            <select name="" id="">
+                                                <option value="">Select Subject</option>
+                                                <option value="">A</option>
+                                                <option value="">B</option>
+                                            </select>
+                                        </div>
+                                        <div class="">Student List</div>
+                                        <div class="Choose_Option">
+                                            <select name="" id="">
+                                                <option value="">Select Exams</option>
+                                                <option value="">A</option>
+                                                <option value="">B</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="Profile_Body_Body Schedule_Body_Body">
+                                        <div class="Row" v-for="student in BatchStudents">
+                                            <div class=""><input type="checkbox" checked></div>
+                                            <div class="">{{ student.std_id }}</div>
+                                            <div class="">{{ student.std_name }}</div>
+                                            <div class="">{{ student.std_phone }}</div>
+                                            <div class="">{{ student.std_email }}</div>
+                                            <div class="">Rank</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <center>
+                                <div class="Save_Close">
+                                    <button class="Save">Print</button>
+                                    <button @click="CloseScheduleDetails()" class="Close">Close</button>
+                                </div>
+                                </center>
+                            </div>
+                            
+                            <!-------------- Examination Details ----------->
+                            <div class="Examination_Profile" v-if="ExaminationDetailsModel">
+                                <div class="Profile_Head" v-for="exam_info in ExaminationInformation">
+                                    <table>
+                                        <tr>
+                                            <td>Subject</td><td> : </td><td>{{ exam_info.exam_sub_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lecture</td><td> : </td><td>{{ exam_info.lec_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Topic</td><td> : </td><td>{{ exam_info.lec_topic }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Answer sheet</td><td> : </td><td><a href="#">{{ exam_info.lec_name }}</a></td>
+                                        </tr>
+                                    </table>
+                                    <table>
+                                        <tr>
+                                            <td>Batch</td><td> : </td><td>{{ exam_info.exam_batch }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Date</td><td> : </td><td>{{ exam_info.exam_date }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Time</td><td> : </td><td>{{ exam_info.exam_starting_time }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total Mark</td><td> : </td><td>{{ exam_info.exam_total_mark }}</td>
+                                        </tr>
+                                    </table>
+                                    <button class="Profile_Edit" @click="OpenExaminationEditForm(exam_info)">EDIT</button>
+                                </div>
+
+                                <div class="Profile_Body">
+                                    
+                                    <div class="Profile_Body_Head">
+                                        <div class="Choose_Option">
+                                            <select name="" id="">
+                                                <option value="">Select Subject</option>
+                                                <option value="">A</option>
+                                                <option value="">B</option>
+                                            </select>
+                                        </div>
+                                        <div class="">Examinations Reseults {{ UploadResult }}</div>
+                                        <div class="Choose_Option">
+                                            <select v-model="UploadResult">
+                                                <option>Students Result</option>
+                                                <option>Upload Result</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="Profile_Body_Body">
+                                        <div class="Row" v-if="UploadResult==='Students Result'" v-for="report in ExamBatchReport">
+                                            <div class="">{{ report.std_id }}</div>
+                                            <div class="">{{ report.std_name }}</div>
+                                            <div class="">{{ report.res_mark }}</div>
+                                            <div class="">{{ Grade(report.res_mark) }}</div>
+                                            <div class="">{{ GPA(report.res_mark) }}</div>
+                                            <div class=""><button>Edit</button></div>
+                                        </div>
+
+                                        <div class="Row" v-if="UploadResult==='Upload Result'" v-for="report1 in ExamBatchReport1">
+                                            <div class="">{{ report1.std_id }}</div>
+                                            <div class="">{{ report1.std_name }}</div>
+                                            
+                                            <div class=""><button>reset</button></div>
+                                            <div class="">{{ Grade(report1.res_mark) }}</div>
+                                            <div class="">{{ GPA(report1.res_mark) }}</div>
+                                            <div class="">5th</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <center>
+                                <div class="Save_Close">
+                                    <button class="Save">Print</button>
+                                    <button @click="CloseExaminationDetails()" class="Close">Close</button>
+                                </div>
+                                </center>
+                            </div>
+
+                            <!-------------- Teacher Profile ----------->
+                            <div class="Teacher_Profile" v-if="TeacherProfileModel">
+                                <div class="Profile_Head" v-for="tch_info in TeacherInformation">
+                                    <table>
+                                        <tr>
+                                            <td>ID</td><td> : </td><td>{{ tch_info.tch_id }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Name</td><td> : </td><td>{{ tch_info.tch_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td><td> : </td><td>{{ tch_info.tch_email }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phone</td><td> : </td><td>{{ tch_info.tch_phone }}</td>
+                                        </tr>
+                                    </table>
+                                    <table>
+                                        <tr>
+                                            <td>Institution</td><td> : </td><td>{{ tch_info.tch_institution }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Department</td><td> : </td><td>{{ tch_info.tch_department }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Subject</td><td> : </td><td>{{ tch_info.tch_subject }}</td>
+                                        </tr>
+                                    </table>
+                                    <button class="Profile_Edit" @click="OpenTeacherEditForm(tch_info)">EDIT</button>
+                                </div>
+
+                                <div class="Profile_Body">
+                                    
+                                    <div class="Profile_Body_Head">
+                                        <div class="Choose_Option">
+                                            <select name="" id="">
+                                                <option value="">Select Subject</option>
+                                                <option v-for="subject in Subjects">{{ subject.sub_name }}</option>
+                                            </select>
+                                        </div>
+                                        <div class="">All Class Schedules</div>
+                                        <div class="Choose_Option">
+                                            <select name="" id="">
+                                                <option value="">Select Batch</option>
+                                                <option v-for="batch in Batch"> {{ batch.bat_name }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="Profile_Body_Body Teacher_Body">
+                                        <div class="Row" v-for="schedule in TeacherClassSchedule">
+                                            <div class="">{{ schedule.schd_date }}</div>
+                                            <div class="">{{ schedule.schd_batch }}</div>
+                                            <div class="">{{ schedule.schd_subject }}</div>
+                                            <div class="">{{ schedule.schd_starting_time }} - {{ schedule.schd_ending_time }}</div>
+                                            <div class="">{{ schedule.tch_name }}</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <center>
+                                <div class="Save_Close">
+                                    <button class="Save">Print</button>
+                                    <button @click="CloseTeacherProfile()" class="Close">Close</button>
+                                </div>
+                                </center>
+                            </div>
+
+                        </div>
+
+                        <div class="Extra_Model" v-if="ExtraModel">
+                            
+                            <div class="Extra_Box" v-if="BatchModel">
+                                <div>
+                                    Create New Batch
+                                </div>
+                                <div class="Input_Field">
+                                    <input type="text" v-model="NewBatch.Name" placeholder="Enter New Batch Name">
+                                </div>
+                                <center>
+                                    <div class="Save_Close">
+                                        <button class="Save" @click="SaveBatchFormData()">Save</button>
+                                        <button @click="CloseBatchModel()" class="Close">Close</button>
+                                    </div>
+                                </center>
+                            </div>
+
+                            <div class="Extra_Box" v-if="ExamTypeModel">
+                                <div>
+                                    Create New Exam Type
+                                </div>
+                                <div class="Input_Field">
+                                    <input type="text" v-model="NewExamType.Name" placeholder="Enter New Exam Type Name">
+                                </div>
+                                <center>
+                                    <div class="Save_Close">
+                                        <button class="Save" @click="SaveExamTypeFormData()">Save</button>
+                                        <button @click="CloseExamTypeModel()" class="Close">Close</button>
+                                    </div>
+                                </center>
+                            </div>
+
+                            <div class="Extra_Box" v-if="SubjectModel">
+                                <div>
+                                    Create New Subject
+                                </div>
+                                <div class="Input_Field">
+                                    <input type="text" v-model="NewSubject.Name" placeholder="Enter New Subject Name">
+                                </div>
+                                <center>
+                                    <div class="Save_Close">
+                                        <button class="Save" @click="SaveSubjectFormData()">Save</button>
+                                        <button @click="CloseSubjectModel()" class="Close">Close</button>
+                                    </div>
+                                </center>
+                            </div>
+
+                            <div class="Extra_Box" v-if="LectureModel">
+                                <div>
+                                    Create New Lecture
+                                </div>
+                                <div class="Input_Field">
+                                    <select v-model="NewLecture.Subject">
+                                        <option value="" disabled>Select Subject</option>
+                                        <option v-for="subject in Subjects">{{ subject.sub_name }}</option>
+                                    </select>
+                                </div>
+                                <div class="Input_Field">
+                                    <input type="text" v-model="NewLecture.Lecture" placeholder="Enter New Lecture Name">
+                                </div>
+                                <textarea v-model="NewLecture.Topic"></textarea>
+                                <center>
+                                    <div class="Save_Close">
+                                        <button class="Save" @click="SaveLectureFormData()">Save</button>
+                                        <button @click="CloseLectureModel()" class="Close">Close</button>
+                                    </div>
+                                </center>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Right_Side_Footer">
+                Developed by AMQL3it
+            </div>
+        </div>
+    </div>
+
+<script src="../Javascript/Library/Vue.js"></script>
+<script src="../Javascript/Library/Axios.js"></script>
+
+<script>
+    var dash = new Vue({
+        el: "#Dashboard_Body",
+        data: {
+            Path : "http://localhost/Admission/Backend/",
+            Menu_Flag : "dashboard",
+
+            FormModel : false,
+            StudentFormModel : false,
+            ScheduleFormModel : false,
+            ExaminationFormModel : false,
+            TeacherFormModel : false,
+            
+            StudentFormEditModel : false,
+            ScheduleFormEditModel : false,
+            ExaminationFormEditModel : false,
+            TeacherFormEditModel : false,
+
+            ProfileModel : false,
+            StudentProfileModel : false,
+            ScheduleDetailsModel : false,
+            ExaminationDetailsModel : false,
+            TeacherProfileModel : false,
+
+            AdminID : "",
+            Temp : {X_ID: ""},
+            UploadResult : "Students Result",
+
+            ExtraModel : false,
+
+            // Batch Data
+            Batch : [],
+            BatchModel : false,
+            NewBatch : { Name : "" },
+
+            // Subject Data
+
+            Subjects : [],
+            SubjectModel : false,
+            NewSubject : { Name: "" },
+
+            // Lecture Data
+            Lecture : [],
+            LectureModel : false,
+            Lec : { Subject: ""},
+
+            NewLecture : {Subject: "", Lecture: "", Topic: ""},
+
+            // Exam Type data
+            ExamTypeModel : false,
+            NewExamType : { Name: "" },
+
+            // Single Student Query
+
+            StudentInformation : [],
+            StudentResult : [],
+
+            ScheduleInformation : [],
+            BatchStudents : [],
+
+            ExaminationInformation : [],
+            ExamBatchReport : [],
+            ExamBatchReport1 : [],
+
+
+            TeacherInformation : [],
+            TeacherClassSchedule : [],
+
+            // Student Data
+            NewStudent : { S_ID: "", S_Name: "", S_Email: "", S_Phone: "", S_School : "", S_Roll : "", S_Registration : "", S_Batch: "" },
+            Students : [],
+
+            // Class Schedule Data
+            NewSchedule : { ID: "", Subject: "", Lecture: "", Date: "", Start_Time: "", End_Time: "", Teacher: "", Batch: ""},
+            Schedules : [],
+
+            // Examination Data
+            ExamType : [],
+            NewExamination : {ID: "", Type: "", Subject: "", Topic: "", Date: "", Time: "", Mark : "", Batch: ""},
+            Examinations : [],
+
+            // Teacher Data
+            NewTeacher : { T_ID: "", T_Name: "", T_Email: "", T_Phone: "", T_Institution : "", T_Department : "", T_Subject: "" },
+            Teachers : [],
+        },
+
+        mounted: function(){
+            this.GetBatch();
+            this.GetStudents();
+            this.GetExamType();
+            this.GetSubject();
+            this.GetTeachers();
+            this.GetSchedules();
+            this.GetExaminations();
+        },
+
+        created() {
+            let URL = window.location.search.substring(1); 
+            let params = new URLSearchParams(URL);
+            this.AdminID = params.get("Admin");
+        },
+
+        methods:{
+
+            Grade:function(mark){
+                if(mark<=100 && mark>=80){
+                    return "A+";
+                }
+                else if(mark<=79 && mark>=70){
+                    return "A";
+                }
+                else if(mark<=69 && mark>=60){
+                    return "A-";
+                }
+                else if(mark<=59 && mark>=50){
+                    return "B";
+                }
+                else if(mark<=49 && mark>=40){
+                    return "C";
+                }
+                else if(mark<=39 && mark>=33){
+                    return "D";
+                }
+                else{
+                    return "F";
+                }
+            },
+
+            GPA:function(mark){
+                if(mark<=100 && mark>=80){
+                    return "5.00";
+                }
+                else if(mark<=79 && mark>=70){
+                    return "4.00";
+                }
+                else if(mark<=69 && mark>=60){
+                    return "3.50";
+                }
+                else if(mark<=59 && mark>=50){
+                    return "3.00";
+                }
+                else if(mark<=49 && mark>=40){
+                    return "2.00";
+                }
+                else if(mark<=39 && mark>=33){
+                    return "1.00";
+                }
+                else{
+                    return "0.00";
+                }
+            },
+
+            // Dashboard Function
+            // Completed *_*
+            Dashboard:function(){
+                this.Menu_Flag = "dashboard";
+            },
+
+            // Completed *_*
+            Student:function(){
+                this.Menu_Flag = "student";
+            },
+
+            // Completed *_*
+            ClassRecord:function(){
+                this.Menu_Flag = "schedule";
+            },
+
+            // Completed *_*
+            Examination:function(){
+                this.Menu_Flag = "examination";
+            },
+
+            // Completed *_*
+            Teacher:function(){
+                this.Menu_Flag = "teacher";
+            },
+
+            Logout:function(){
+                //return location.href = "Page_LoginPage.html";
+                console.log("Logout")
+            },
+
+// Common Model Controll Function
+
+            /*
+                Those functions will open and close "Form Model".
+                1. New Student Add and Update
+                2. New Schedule Create and Update
+                3. New Examination Create and Update
+                4. New Teacher Add and Update
+            */
+            // Completed *_*
+            OpenFormModel:function(){
+                return this.FormModel = true;
+            },
+            // Completed *_*
+            CloseFormModel:function(){
+                return this.FormModel = false;
+            },
+
+            /*
+                Those functions will open and close "Profile Model".
+                1. Student Profile
+                2. Schedule Details
+                3. Examination Details
+                4. Teacher Profile
+            */
+            // Completed *_*
+            OpenProfileModel:function(){ 
+                return this.ProfileModel = true;
+            },
+            // Completed *_*
+            CloseProfileModel:function(){
+                return this.ProfileModel = false;
+            },
+
+            /*
+                Those functions will open and close "Extra Model".
+                1. New Batch Create
+                2. New Subject Add
+                3. New Subject Lecture Add
+            */
+            // Completed *_*
+            OpenExtraModel:function(){
+                this.ExtraModel = true;
+            },
+            // Completed *_*
+            CloseExtraModel:function(){
+                this.ExtraModel = false;
+            },
+            
+// Common Basic Functions
+            // This function is for "Form Data Convert InTo JSON".
+            // Completed *_*
+            toFormData:function(obj){
+                var form_data = new FormData();
+                for( var key in obj ){
+                    form_data.append(key, obj[key]);
+                }
+                return form_data;
+            },
+
+// Extra Model Controll Functions.
+
+            /*
+                Those functions will open and close "Batch Form Model".
+            */ 
+            // Completed *_*
+            OpenBatchModel:function(){
+                this.BatchModel = true;
+                this.OpenExtraModel();
+
+                this.NewBatch.Name = "";
+                console.log("Open Batch Create Form");
+            },
+            // Completed *_*
+            CloseBatchModel:function(){
+                this.BatchModel = false;
+                this.CloseExtraModel();
+
+                console.log("Close Batch Create Form");
+            },
+
+            /*
+                Those functions will open and close "Exam Type Form Model".
+            */ 
+            // Completed *_*
+            OpenExamTypeModel:function(){
+                this.ExamTypeModel = true;
+                this.OpenExtraModel();
+
+                this.NewExamType.Name = "";
+                console.log("Open Exam Type Create Form");
+            },
+            // Completed *_*
+            CloseExamTypeModel:function(){
+                this.ExamTypeModel = false;
+                this.CloseExtraModel();
+
+                console.log("Close Exam Type Create Form");
+            },
+
+            /*
+                Those functions will open and close "Subject Form Model".
+            */ 
+            // Completed *_*
+            OpenSubjectModel:function(){
+                this.SubjectModel = true;
+                this.OpenExtraModel();
+
+                this.NewSubject.Name = "";
+                console.log("Open Subject Add Form");
+            },
+            // Completed *_*
+            CloseSubjectModel:function(){
+                this.SubjectModel = false;
+                this.CloseExtraModel();
+
+                console.log("Close Subject Add Form");
+            },
+
+            /*
+                Those functions will open and close "Subject Form Model".
+            */ 
+            // Completed *_*
+            OpenLectureModel:function(){
+                this.LectureModel = true;
+                this.OpenExtraModel();
+
+                this.NewLecture.Subject = "";
+                this.NewLecture.Lecture = "";
+                this.NewLecture.Topic = "";
+
+                console.log("Open Lecture Add Form");
+            },
+            // Completed *_*
+            CloseLectureModel:function(){
+                this.LectureModel = false;
+                this.CloseExtraModel();
+
+                console.log("Close Lecture Add Form");
+            },
+
+
+// Student Model Controll Functions 
+            /*
+                Those functions will open and close "Student Add Form Model".
+            */ 
+            // Completed *_*
+            OpenStudentAddForm:function(){  
+                this.StudentFormModel = true;
+                this.OpenFormModel();
+
+                console.log("Open Add New Student Form");
+            },
+            // Completed *_*
+            CloseStudentAddForm:function(){
+                this.StudentFormModel = false;
+                this.CloseFormModel();
+
+                console.log("Close Add New Student Form");
+            },
+
+            /*
+                Those functions will open and close "Student Edit Form Model".
+            */ 
+            // Completed *_*
+            OpenStudentEditForm:function(CurrentSTD){ 
+                this.StudentFormEditModel = true;
+                this.OpenFormModel();
+                //console.log(CurrentSTD);
+
+                this.NewStudent.S_ID = CurrentSTD[0];
+                this.NewStudent.S_Name = CurrentSTD[1];
+                this.NewStudent.S_Email = CurrentSTD[2];
+                this.NewStudent.S_Phone = CurrentSTD[3];
+                this.NewStudent.S_School = CurrentSTD[4];
+                this.NewStudent.S_Roll = CurrentSTD[5];
+                this.NewStudent.S_Registration = CurrentSTD[6];
+                this.NewStudent.S_Batch = CurrentSTD[7];
+
+                console.log("Open Student Edit Form");
+            },
+            // Completed *_*
+            CloseStudentEditForm:function(){  
+                this.StudentFormEditModel = false;
+                this.CloseFormModel();
+
+                this.NewStudent.S_ID = "";
+                this.NewStudent.S_Name = "";
+                this.NewStudent.S_Email = "";
+                this.NewStudent.S_Phone = "";
+                this.NewStudent.S_School = "";
+                this.NewStudent.S_Roll = "";
+                this.NewStudent.S_Registration = "";
+                this.NewStudent.S_Batch = "";
+
+                console.log("Close Student Edit Form");
+            },
+
+            /*
+                Those functions will open and close "Student Profile Model".
+            */ 
+            // Completed
+            OpenStudentProfile:function(s_id){
+                this.StudentProfileModel = true;
+                this.GetStudentInformation(s_id);
+                this.OpenProfileModel();
+
+                console.log("Open "+s_id+" Student Profile");
+            },
+            // Completed *_*
+            CloseStudentProfile:function(){
+                this.StudentProfileModel = false;
+                this.CloseProfileModel();
+
+                console.log("Close Student Profile");
+            },
+
+            /*
+                Print option code should be written in this space
+            */
+
+
+// Class Scheduele Model Controll Functions.
+            /*
+                Those functions will open and close "Class Schedule Add Model".
+            */ 
+            // Completed *_*
+            OpenScheduleAddForm:function(){
+                this.ScheduleFormModel = true;
+                this.OpenFormModel();
+
+                console.log("Open Add New Schedule Form");
+            },
+            // Completed *_*
+            CloseScheduleAddForm:function(){
+                this.ScheduleFormModel = false;
+                this.CloseFormModel();
+
+                console.log("Close Add New Schedule Form");
+            },
+
+            /*
+                Those functions will open and close "Class Schedule Edit Model".
+            */ 
+            // Completed *_*
+            OpenScheduleEditForm:function(CurrentSDL){
+                this.ScheduleFormEditModel= true;
+                this.OpenFormModel();
+                //console.log(CurrentSDL);
+                
+                this.NewSchedule.ID = CurrentSDL[0];
+                this.NewSchedule.Subject = CurrentSDL[1];
+                this.GetLecture(this.NewSchedule.Subject);
+                this.NewSchedule.Lecture = CurrentSDL[2];
+                this.NewSchedule.Date = CurrentSDL[3];
+                this.NewSchedule.Start_Time = CurrentSDL[4];
+                this.NewSchedule.End_Time = CurrentSDL[5];
+                this.NewSchedule.Teacher = CurrentSDL[6];
+                this.NewSchedule.Batch = CurrentSDL[7];
+                
+                console.log("Open Schedule Edit Form");
+            },
+            // Completed *_*
+            CloseScheduleEditForm:function(){
+                this.ScheduleFormEditModel= false;
+                this.CloseFormModel();
+
+                console.log("Close Schedule Edit Form");
+            },
+
+            /*
+                Those functions will open and close "Class Schedule Details Model".
+            */ 
+            // Completed *_*
+            OpenScheduleDetails:function(c_id){
+                this.ScheduleDetailsModel = true;
+                this.GetScheduleInformation(c_id);
+                this.OpenProfileModel();
+
+                console.log("Open "+c_id+" Class Schedule Details");
+            },
+            // Completed *_*
+            CloseScheduleDetails:function(){
+                this.ScheduleDetailsModel = false;
+                this.CloseProfileModel();
+
+                console.log("Close Class Schedule Details");
+            },
+
+
+            
+// Examination Model Controll Functions.
+            /*
+                Those functions will open and close "Examination Schedule Add Form Model".
+            */ 
+            // Completed *_*
+            OpenExaminationAddForm:function(){   
+                    this.ExaminationFormModel = true;
+                    this.OpenFormModel();
+
+                    console.log("Open Add New Examination Form");
+            },
+            // Completed *_*
+            CloseExaminationAddForm:function(){   
+                    this.ExaminationFormModel = false;
+                    this.CloseFormModel();
+
+                    console.log("Close Add New Examination Form");
+            },
+
+            /*
+                Those functions will open and close "Examination Schedule Edit Form Model".
+            */ 
+            // Completed *_*
+            OpenExaminationEditForm:function(CurrentEXM){   
+                this.ExaminationFormEditModel = true;
+                this.OpenFormModel();
+                //console.log(CurrentEXM);
+
+                this.NewExamination.ID = CurrentEXM[0];
+                this.NewExamination.Type = CurrentEXM[1];
+                this.NewExamination.Subject = CurrentEXM[2];
+                this.GetLecture(this.NewExamination.Subject);
+                this.NewExamination.Topic = CurrentEXM[3];
+                this.NewExamination.Date = CurrentEXM[4];
+                this.NewExamination.Time = CurrentEXM[5];
+                this.NewExamination.Mark = CurrentEXM[7];
+                this.NewExamination.Batch = CurrentEXM[8];
+
+                console.log("Open Examination Schedule Edit Form");
+            },
+            // Completed *_*
+            CloseExaminationEditForm:function(){   
+                    this.ExaminationFormEditModel = false;
+                    this.CloseFormModel();
+                    console.log("Close Examination Schedule Edit Form");
+            },
+
+            /*
+                Those functions will open and close "Examination Schedule Details".
+            */ 
+            // Completed *_*
+            OpenExaminationDetails:function(e_id){ 
+                    this.ExaminationDetailsModel = true;
+                    this.GetExaminationInformation(e_id);
+                    this.OpenProfileModel();
+
+                    console.log("Open Examination Schedule Details");
+            },
+            // Completed *_*
+            CloseExaminationDetails:function(){   
+                    this.ExaminationDetailsModel = false;
+                    this.CloseProfileModel();
+
+                    console.log("Close Examination Schedule Details");
+            },
+
+            
+// Teacher Model Controll Functions.
+            /*
+                Those functions will open and close "Examination Schedule Details".
+            */ 
+            // Completed *_*
+            OpenTeacherAddForm:function(){
+                this.TeacherFormModel = true;
+                this.OpenFormModel();
+
+                console.log("Open Add New Teacher Form");
+            },
+            // Completed *_*
+            CloseTeacherAddForm:function(){ 
+                this.TeacherFormModel = false;
+                this.CloseFormModel();
+
+                console.log("Close Add New Teacher Form");
+            },
+
+            /*
+                Those functions will open and close "Teacher Edit Form Model".
+            */ 
+            // Completed *_*
+            OpenTeacherEditForm:function(CurrentTCH){  
+                this.TeacherFormEditModel = true;
+                this.OpenFormModel();
+
+                this.NewTeacher.T_ID = CurrentTCH[0];
+                this.NewTeacher.T_Name = CurrentTCH[1];
+                this.NewTeacher.T_Email = CurrentTCH[2];
+                this.NewTeacher.T_Phone = CurrentTCH[3];
+                this.NewTeacher.T_Institution = CurrentTCH[4];
+                this.NewTeacher.T_Department = CurrentTCH[5];
+                this.NewTeacher.T_Subject = CurrentTCH[6];
+
+                console.log("Open Teacher Edit Form");
+            },
+            // Completed *_*
+            CloseTeacherEditForm:function(){ 
+                this.TeacherFormEditModel = false;
+                this.CloseFormModel();
+
+                console.log("Close Teacher Edit Form");
+            },
+
+            /*
+                Those functions will open and close "Teacher Profile Model".
+            */ 
+            // Completed *_*
+            OpenTeacherProfile:function(t_id){  
+                this.TeacherProfileModel = true;
+                this.GetTeacherInformation(t_id);
+                this.OpenProfileModel();
+
+                console.log("Open Teacher Profile");
+            },
+            // Completed *_*
+            CloseTeacherProfile:function(){
+                this.TeacherProfileModel = false;
+                this.CloseProfileModel();
+
+                console.log("Close Teacher Profile");
+            },
+
+// Mounted Functions and General Get Fuctions.
+            // Completed *_*
+            GetBatch:function(){
+                axios.get(this.Path+"BK_Get_Batch.php")
+                .then(function(res){
+                    return dash.Batch = res.data.batch;
+                });
+            },
+
+            // Completed *_*
+            GetExamType:function(){
+                axios.get(this.Path+"BK_Get_ExamType.php")
+                .then(function(res){
+                    return dash.ExamType = res.data.examtype;
+                });
+            },
+
+            // Completed *_*
+            GetSubject:function(){
+                axios.get(this.Path+"BK_Get_Subject.php")
+                .then(function(res){
+                    return dash.Subjects = res.data.subject;
+                });
+            },
+
+            // Completed *_*
+            GetLecture:function(Sub){
+                this.Lec.Subject = Sub;
+                var FormUser = dash.toFormData(this.Lec);
+            
+                axios.post(this.Path+"BK_Get_Lecture.php", FormUser)
+                .then(function(res){
+                    return dash.Lecture = res.data.lecture;
+                    //console.log(res.data.lecture);
+                });
+            },
+
+            // Completed *_*
+            GetStudents:function(){
+                axios.get(this.Path+"BK_Get_Students.php")
+                .then(function(res){
+                    //console.log(res.data.students);
+                    dash.Students = res.data.students;
+                    //console.log(dash.StudentList);
+                });
+            },
+
+            // Completed *_*
+            GetExaminations:function(){
+                axios.get(this.Path+"BK_Get_Examinations.php")
+                .then(function(res){
+                    //console.log(res.data.students);
+                    dash.Examinations = res.data.examinations;
+                    //console.log(dash.StudentList);
+                });
+            },
+
+            // Completed *_*
+            GetSchedules:function(){
+                axios.get(this.Path+"BK_Get_Schedules.php")
+                .then(function(res){
+                    //console.log(res.data.students);
+                    dash.Schedules = res.data.schedules;
+                    //console.log(dash.StudentList);
+                });
+            },
+
+            // Completed *_*
+            GetTeachers:function(){
+                axios.get(this.Path+"BK_Get_Teachers.php")
+                .then(function(res){
+                    //console.log(res.data.students);
+                    dash.Teachers = res.data.teachers;
+                    //console.log(dash.StudentList);
+                });
+            },
+
+// Common Post Functions.
+
+            // This function is use for Batch Form Data to transfer Database.
+            // Completed *_*
+            SaveBatchFormData:function(){
+                //console.log(this.NewBatch);
+                var FormUser = dash.toFormData(this.NewBatch);
+            
+                axios.post(this.Path+"BK_Save_Batch_Form_Data.php", FormUser)
+                .then(function(res){
+                    dash.CloseBatchModel();
+                    dash.GetBatch();
+                    console.log(res.data);
+                });
+            },
+
+            // This function is use for Exam Type Form Data to transfer Database.
+            // Completed *_*
+            SaveExamTypeFormData:function(){
+                var FormUser = dash.toFormData(this.NewExamType);
+            
+                axios.post(this.Path+"BK_Save_ExamType_Form_Data.php", FormUser)
+                .then(function(res){
+                    dash.CloseExamTypeModel();
+                    dash.GetExamType();
+                    console.log(res.data);
+                });
+            },
+
+            // This function is use for Subject Form Data to transfer Database.
+            // Completed *_*
+            SaveSubjectFormData:function(){
+                //console.log(this.NewSubject);
+                var FormUser = dash.toFormData(this.NewSubject);
+            
+                axios.post(this.Path+"BK_Save_Subject_Form_Data.php", FormUser)
+                .then(function(res){
+                    dash.CloseSubjectModel();
+                    dash.GetSubject();
+                    console.log(res.data);
+                });
+            },
+
+            // This function is use for Lecture Form Data to transfer Database.
+            // Completed *_*
+            SaveLectureFormData:function(){
+                //console.log(this.NewLecture);
+                var FormUser = dash.toFormData(this.NewLecture);
+            
+                axios.post(this.Path+"BK_Save_Lecture_Form_Data.php", FormUser)
+                .then(function(res){
+                    dash.CloseLectureModel();
+                    //dash.GetSubject();
+                    console.log(res.data);
+                });
+            },
+
+            
+
+// Student Post Functions
+
+            // This function is use for Student Form Data to transfer Database.
+            // Completed *_*
+            SaveStudentFormData:function(){ 
+                //console.log(this.NewStudent);
+                var FormUser = dash.toFormData(this.NewStudent);
+            
+                axios.post(this.Path+"BK_Save_Student_Form_Data.php", FormUser)
+                .then(function(res){
+                    dash.CloseStudentAddForm();
+                    dash.GetStudents();
+                    console.log(res.data);
+                });
+            },
+
+            // This function is use for Student Form Data to update in Database.
+            // Completed *_*
+            UpdateStudentFormData:function(){
+                var Temp_ID = this.NewStudent.S_ID;
+                var FormUser = dash.toFormData(this.NewStudent);
+            
+                axios.post(this.Path+"BK_Update_Student_Form_Data.php", FormUser)
+                .then(function(res){
+                    dash.CloseStudentAddForm();
+                    dash.GetStudentInformation(Temp_ID);
+                    dash.GetStudents();
+                    console.log(res.data);
+                });
+            },
+
+            // This function is use for Student full information
+            // Completed *_*
+            GetStudentInformation:function(s_id){
+                this.Temp.X_ID = s_id;
+                var FormUser = dash.toFormData(this.Temp);
+            
+                axios.post(this.Path+"BK_Student_Information.php", FormUser)
+                .then(function(res){
+                    dash.StudentInformation = res.data.personalinfo;
+                    dash.StudentResult = res.data.resultinfo;
+                    //console.log(res.data);
+                    alert("Welcome to student information");
+                });
+            },
+
+
+// Schedule Post Functions
+
+            // This function is use for Schedule Form Data to transfer Database.
+            // Completed *_*
+            SaveScheduleFormData:function(){
+                //console.log(this.NewSchedule);
+                var FormUser = dash.toFormData(this.NewSchedule);
+            
+                axios.post(this.Path+"BK_Save_Schedule_Form_Data.php", FormUser)
+                .then(function(res){
+                    dash.CloseScheduleAddForm();
+                    dash.GetSchedules();
+                    console.log(res.data);
+                });
+            },
+
+            // This function is use for Schedule Form Data to update in Database.
+            // Completed *_*
+            UpdateScheduleFormData:function(){
+                var Temp_ID = this.NewSchedule.ID;
+                var FormUser = dash.toFormData(this.NewSchedule);
+            
+                axios.post(this.Path+"BK_Update_Schedule_Form_Data.php", FormUser)
+                .then(function(res){
+                    dash.CloseScheduleAddForm();
+                    dash.GetScheduleInformation(Temp_ID);
+                    dash.GetSchedules();
+                    console.log(res.data);
+                });
+            },
+
+            // This function is use for Schedule full information
+            // Completed *_*
+            GetScheduleInformation:function(c_id){
+                this.Temp.X_ID = c_id;
+                var FormUser = dash.toFormData(this.Temp);
+            
+                axios.post(this.Path+"BK_Schedule_Information.php", FormUser)
+                .then(function(res){
+                    dash.ScheduleInformation = res.data.topicinfo;
+                    dash.BatchStudents = res.data.batchinfo;
+                    //console.log(res.data);
+                });
+            },
+
+// Examination Post Functions.
+
+            // This function is use for Examination Form Data to transfer Database.
+            // Completed *_*
+            SaveExaminationFormData:function(){ 
+                //console.log(this.NewExamination);
+                var FormUser = dash.toFormData(this.NewExamination);
+            
+                axios.post(this.Path+"BK_Save_Examination_Form_Data.php", FormUser)
+                .then(function(res){
+                    dash.CloseExaminationAddForm();
+                    dash.GetExaminations();
+                    return console.log(res.data);
+                });
+            },
+
+            // This function is use for Examination Form Data to update in Database.
+            // Completed *_*
+            UpdateExaminationFormData:function(){ 
+                var Temp_ID = this.NewExamination.ID;
+                var FormUser = dash.toFormData(this.NewExamination);
+            
+                axios.post(this.Path+"BK_Update_Examination_Form_Data.php", FormUser)
+                .then(function(res){
+                    dash.CloseExaminationAddForm();
+                    dash.GetExaminationInformation(Temp_ID);
+                    dash.GetExaminations();
+                    console.log(res.data);
+                });
+            },
+
+            // This function is use for Examination full information
+            // #####################################################
+            GetExaminationInformation:function(e_id){
+                this.Temp.X_ID = e_id;
+                var FormUser = dash.toFormData(this.Temp);
+            
+                axios.post(this.Path+"BK_Examination_Information.php", FormUser)
+                .then(function(res){
+                    dash.ExaminationInformation = res.data.topicinfo;
+                    dash.ExamBatchReport = res.data.batchinfopos;
+                    dash.ExamBatchReport1 = res.data.batchinfoneg;
+                    console.log(res.data.batchinfo);
+                });
+            },
+
+// Teacher Post Functions.
+
+            // This function is use for Teacher Form Data to transfer Database.
+            // Completed *_*
+            SaveTeacherFormData:function(){ 
+                //console.log(this.Teacher);
+                var FormUser = dash.toFormData(this.NewTeacher);
+            
+                axios.post(this.Path+"BK_Save_Teacher_Form_Data.php", FormUser)
+                .then(function(res){
+                    dash.CloseTeacherAddForm();
+                    dash.GetTeachers();
+                    console.log(res.data);
+                });
+            },
+
+            // This function is use for Teacher Form Data to update in Database.
+            // Completed *_*
+            UpdateTeacherFormData:function(){   
+                var Temp_ID = this.NewTeacher.T_ID;
+                var FormUser = dash.toFormData(this.NewTeacher);
+            
+                axios.post(this.Path+"BK_Update_Teacher_Form_Data.php", FormUser)
+                .then(function(res){
+                    dash.CloseTeacherAddForm();
+                    dash.GetTeacherInformation(Temp_ID);
+                    dash.GetTeachers();
+                    console.log(res.data);
+                });
+            },
+
+            // This function is use for Teacher full information
+            // Completed *_*
+            GetTeacherInformation:function(t_id){
+                this.Temp.X_ID = t_id;
+                var FormUser = dash.toFormData(this.Temp);
+            
+                axios.post(this.Path+"BK_Teacher_Information.php", FormUser)
+                .then(function(res){
+                    dash.TeacherInformation = res.data.personalinfo;
+                    dash.TeacherClassSchedule = res.data.classinfo;
+                    //console.log(res.data);
+                });
+            },
+
+        },
+    });
+</script>
+
+</body>
+</html>

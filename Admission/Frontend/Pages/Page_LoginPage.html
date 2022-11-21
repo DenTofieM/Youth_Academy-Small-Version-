@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../Assets/Static/icon.png"/>
+    <title>Youth Academy</title>
+    <link rel="stylesheet" href="../Stylesheet/Style_LoginPage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="../Javascript/Library/Axios.js"></script>
+</head>
+<body>
+
+    <section class="main-body">
+        <div class="Login_Part">
+            <div class="Login_Header">
+                <img src="../Assets/Static/User-icon.png" @click="GoToHome()" alt="">
+                <span>System Login</span>
+                <span id="Error" v-if="errorFlag">{{ errorMsg }}</span>
+            </div>
+            <div class="Login_Body">
+                <div class="Input_Field">
+                    <i class="fa fa-user"></i>
+                    <input type="text" v-model="newuser.user_id" placeholder="Enter Your Email">
+                </div>
+                <div class="Input_Field">
+                    <i class="fa fa-lock"></i>
+                    <input type="password" v-model="newuser.password" placeholder="Enter Your Password">
+                </div>
+
+                <div class="Input_Field">
+                    <span><input type="checkbox"> Remember Me</span>
+                    <span>Forgot Password</span>
+                </div>
+
+                <div class="Input_Field">
+                    <button @click="LoginAccess()">Login</button>
+                </div>
+            </div>
+            <div class="Login_Footer">
+                
+            </div>
+        </div>
+    </section>
+<script src="../Javascript/Library/Vue.js"></script>
+<script src="../Javascript/JS/JS_LoginPage.js"></script>
+</body>
+</html>

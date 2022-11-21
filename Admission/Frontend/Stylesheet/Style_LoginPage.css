@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.main-body {
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(to left, rgba(36, 36, 36, 0.349),rgba(97, 96, 96, 0.205)), url("../Assets/Static/bannar2.jpg");
+    background-size: 100vw 100vh;
+    background-repeat: no-repeat;
+    background-color: rgba(134, 112, 136, 0.192);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Login_Part {
+    margin: auto;
+    border: 2px solid black;
+    background-color: rgba(139, 138, 138, 0.466);
+    border-radius: 10px;
+    color: white;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 20px;
+}
+.Login_Header {
+    margin-top: 30px;
+}
+
+.Login_Header, .Login_Body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+}
+
+.Login_Header img {
+    height: 90px;
+    width: 90px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.Login_Header #Error{
+    background-color: red;
+    color: #ccc;
+    font-size: 13px;
+    border-radius: 5px;
+    text-align: center;
+    padding: 7px;
+    margin-top: 10px;
+}
+
+.Login_Body {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.Login_Body .Input_Field {
+    height: 40px;
+    width: 100%;
+    margin-top: 7px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Input_Field input {
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    padding-left: 20px;
+    flex-basis: 90%;
+}
+
+button {
+    width: 120px;
+    height: 35px;
+    background-color: rgb(50, 55, 133);
+    color: white;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.Input_Field .fa {
+    font-size: 27px;
+    font-weight: bold;
+    color: white;
+}
+
+.Login_Footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    margin: 10px;
+}
+
+.Login_Footer .Footer_Link .fa {
+    font-size: 30px;
+    font-weight: bold;
+    color: aqua;
+    cursor: pointer;
+}
